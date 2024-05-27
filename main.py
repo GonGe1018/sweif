@@ -48,12 +48,18 @@ def get_wifi_list(os_type: str):
     return data
 
 
+def target_wifi_filtering(wifi_list:list, target_SSID:str):
+    return [wifi for wifi in wifi_list if wifi['SSID'] == target_SSID]
+
 def main():
     current_os = platform.system()  # 현재 OS 검사
     target_SSID = input()
 
     wifi_list = get_wifi_list(os_type=current_os)
     pprint(wifi_list, indent=4)
+
+    filtered_wifi_list = target_wifi_filtering(wifi_list=wifi_list, target_SSID=target_SSID)
+    print(filtered_wifi_list)
 
 
 if __name__ == "__main__":
