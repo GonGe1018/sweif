@@ -4,6 +4,33 @@ import getpass
 from pprint import pprint
 
 
+def parser(info: str) -> dict:
+    wifies = []
+    info = info.split("\n")
+    columns = [i for i in info[0].strip().split()]
+
+    for line in info[1:]:
+        wifi_info = {}
+        flag = 0
+        result = []
+        for t in line.strip().split():
+            if len(t.split(":")) == 6:
+                tmp = str(result)[1:-1].replace(',', '').replace('\'', '')
+                result = [tmp]
+                ap = t
+                flag = 1
+            elif flag == 1:
+                ap = int(t)
+                flag = 2
+            elif flag == 2:
+                ap = [int(i) for i in t.split(',')]
+                flag = -1
+            else: ap = t
+            result.append(ap)
+
+
+        wifies.append({columns[i]:result[i] for i in range(len(result))})
+    return wifies
 def get_wifi_list(os_type: str):
 
     if os_type == "Windows":
